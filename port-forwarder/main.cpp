@@ -3,13 +3,10 @@
 #include <string>
 #include "color.h"
 #include "server.h"
-//#include "client.h"
-
 
 int main ( int argc, char **argv ){
 	
 	int local_port = 2706;
-	
 
 	/* ###########################
 		Set up environment
