@@ -12,7 +12,7 @@ int main ( int argc, char **argv ){
 	
 
 	/* ###########################
-		Setting environment
+		Set up environment
 	############################*/
 	
 	std::cout << CYAN << "\n[ ACTION ]" << RESET << " Starting \n";
