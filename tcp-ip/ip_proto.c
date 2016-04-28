@@ -1,12 +1,17 @@
-#include<stdio.h> //For standard things
-#include<stdlib.h>    //malloc
-#include<string.h>    //memset
-#include<netinet/ip_icmp.h>   //Provides declarations for icmp header
-#include<netinet/udp.h>   //Provides declarations for udp header
-#include<netinet/tcp.h>   //Provides declarations for tcp header
-#include<netinet/ip.h>    //Provides declarations for ip header
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h> 
+#include<netinet/ip_icmp.h>
+#include<netinet/udp.h> 
+#include<netinet/tcp.h>
+#include<netinet/ip.h>
 #include<sys/socket.h>
 #include<arpa/inet.h>
+
+/*************************************
+* I am not the owner of this source, *
+* I just made a few changes on it .  *
+*************************************/
 
 void ProcessPacket(unsigned char* , int);
 void print_ip_header(unsigned char* , int);
@@ -26,7 +31,7 @@ int main()
     struct sockaddr saddr;
     struct in_addr in;
 
-    unsigned char *buffer = (unsigned char *)malloc(65536); //Its Big!
+    unsigned char *buffer = (unsigned char *)malloc(65536); 
 
     logfile=fopen("log.txt","w");
     if(logfile==NULL) printf("Unable to create file.");
@@ -109,9 +114,6 @@ void print_ip_header(unsigned char* Buffer, int Size)
     fprintf(logfile,"   |-Type Of Service   : %d\n",(unsigned int)iph->tos);
     fprintf(logfile,"   |-IP Total Length   : %d  Bytes(Size of Packet)\n",ntohs(iph->tot_len));
     fprintf(logfile,"   |-Identification    : %d\n",ntohs(iph->id));
-    //fprintf(logfile,"   |-Reserved ZERO Field   : %d\n",(unsigned int)iphdr->ip_reserved_zero);
-    //fprintf(logfile,"   |-Dont Fragment Field   : %d\n",(unsigned int)iphdr->ip_dont_fragment);
-    //fprintf(logfile,"   |-More Fragment Field   : %d\n",(unsigned int)iphdr->ip_more_fragment);
     fprintf(logfile,"   |-TTL      : %d\n",(unsigned int)iph->ttl);
     fprintf(logfile,"   |-Protocol : %d\n",(unsigned int)iph->protocol);
     fprintf(logfile,"   |-Checksum : %d\n",ntohs(iph->check));
@@ -139,8 +141,6 @@ void print_tcp_packet(unsigned char* Buffer, int Size)
     fprintf(logfile,"   |-Sequence Number    : %u\n",ntohl(tcph->seq));
     fprintf(logfile,"   |-Acknowledge Number : %u\n",ntohl(tcph->ack_seq));
     fprintf(logfile,"   |-Header Length      : %d DWORDS or %d BYTES\n" ,(unsigned int)tcph->doff,(unsigned int)tcph->doff*4);
-    //fprintf(logfile,"   |-CWR Flag : %d\n",(unsigned int)tcph->cwr);
-    //fprintf(logfile,"   |-ECN Flag : %d\n",(unsigned int)tcph->ece);
     fprintf(logfile,"   |-Urgent Flag          : %d\n",(unsigned int)tcph->urg);
     fprintf(logfile,"   |-Acknowledgement Flag : %d\n",(unsigned int)tcph->ack);
     fprintf(logfile,"   |-Push Flag            : %d\n",(unsigned int)tcph->psh);
@@ -223,8 +223,6 @@ void print_icmp_packet(unsigned char* Buffer , int Size)
         fprintf(logfile,"  (ICMP Echo Reply)\n");
     fprintf(logfile,"   |-Code : %d\n",(unsigned int)(icmph->code));
     fprintf(logfile,"   |-Checksum : %d\n",ntohs(icmph->checksum));
-    //fprintf(logfile,"   |-ID       : %d\n",ntohs(icmph->id));
-    //fprintf(logfile,"   |-Sequence : %d\n",ntohs(icmph->sequence));
     fprintf(logfile,"\n");
 
     fprintf(logfile,"IP Header\n");
