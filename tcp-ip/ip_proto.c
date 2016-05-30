@@ -8,11 +8,6 @@
 #include<sys/socket.h>
 #include<arpa/inet.h>
 
-/*************************************
-* I am not the owner of this source, *
-* I just made a few changes on it .  *
-*************************************/
-
 void ProcessPacket(unsigned char* , int);
 void print_ip_header(unsigned char* , int);
 void print_tcp_packet(unsigned char* , int);
@@ -46,14 +41,14 @@ int main()
     while(1)
     {
         saddr_size = sizeof saddr;
-        //Receive a packet
+       
         data_size = recvfrom(sock_raw , buffer , 65536 , 0 , &saddr , &saddr_size);
         if(data_size <0 )
         {
             printf("Recvfrom error , failed to get packets\n");
             return 1;
         }
-        //Now process the packet
+        
         ProcessPacket(buffer , data_size);
     }
     close(sock_raw);
