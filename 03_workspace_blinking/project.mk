@@ -30,11 +30,11 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 # current project
-PROJECT = examples/pwm
+PROJECT = examples/blinky_rit
 
 # current target
-TARGET = lpc4337_m4
-#TARGET = lpc4337_m0
+#TARGET = lpc4337_m4
+TARGET = lpc4337_m0
 #TARGET = lpc1769
 #TARGET = lpc54102_m4
 #TARGET = lpc54102_m0
