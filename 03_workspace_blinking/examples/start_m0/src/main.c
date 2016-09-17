@@ -75,7 +75,7 @@ static void initHardware(void)
 	SysTick_Config(SystemCoreClock / 1000);
 
 	/* Start Cortex-M0 core */
-	cr_start_m0(SLAVE_M0APP, (uint8_t *)0x1B000000);
+	//cr_start_m0(SLAVE_M0APP, (uint8_t *)0x1B000000);
 }
 
 static void pausems(uint32_t t)
