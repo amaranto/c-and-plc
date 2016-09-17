@@ -1,0 +1,18 @@
+#!/bin/bash
+
+CFLAGS="-Wall -O0 -ggdb3 -mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -fdata-sections -ffunction-sections"
+
+LFLAGS="-nostdlib -fno-builtin -mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 \
+           -mfloat-abi=softfp -Xlinker -Map=out/map.map"
+
+SYMBOLS="-DDEBUG -DCORE_M4 -D__USE_LPCOPEN -D__LPC43XX__ -D__CODE_RED \
+           -DLPC43_MULTICORE_M0APP -D__MULTICORE_MASTER \
+					 -D__MULTICORE_MASTER_SLAVE_M0APP"
+
+LD_FILE="-Tsrc/lpc4337_m4_lib.ld -Tsrc/lpc4337_m4_mem.ld -Tsrc/lpc4337_m4.ld"
+
+
+arm-none-eabi-gcc $SYMBOLS $CFLAGS -c src/main.c -o out/main.o
+arm-none-eabi-gcc $SYMBOLS $CFLAGS -c src/cr_startup_lpc43xx.c -o out/cr_startup_lpc43xx.o
+
+arm-none-eabi-gcc $LFLAGS $LD_FILE -o blinky_sin_makefile.axf out/main.o out/cr_startup_lpc43xx.o
