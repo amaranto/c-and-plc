@@ -30,7 +30,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 # current project
-PROJECT = examples/start_m0	
+PROJECT = examples/start_m0
 
 # current target
 TARGET = lpc4337_m4
