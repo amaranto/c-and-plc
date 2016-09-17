@@ -75,7 +75,7 @@ static void initHardware(void)
 	SysTick_Config(SystemCoreClock / 1000);
 
 	/* Start Cortex-M0 core */
-	//cr_start_m0(SLAVE_M0APP, (uint8_t *)0x1B000000);
+	cr_start_m0(SLAVE_M0APP, (uint8_t *)0x1B000000);
 }
 
 static void pausems(uint32_t t)
@@ -99,8 +99,18 @@ int main(void)
 
 	while (1)
 	{
-		Board_LED_Toggle(LED);
+		Board_LED_Toggle(LEDRGB);
 		pausems(DELAY_MS);
+		Board_LED_Toggle(LED1);
+		pausems(DELAY_2);
+		Board_LED_Toggle(LED5);
+		pausems(DELAY_3);
+		Board_LED_Toggle(LED4);
+		Board_LED_Toggle(LED2);
+		pausems(DELAY_2);
+		Board_LED_Toggle(LED3);
+		pausems(DELAY_3);
+		Board_LED_Toggle(LED1);
 	}
 }
 
