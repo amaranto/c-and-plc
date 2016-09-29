@@ -1,4 +1,0 @@
-10:15:43 **** Build of configuration Default for project 03_workspace_blinking ****
-make all 
-Makefile:39: examples/pwm/Makefile: No such file or directory
-make: *** No rule to make target 'examples/pwm/Makefile'.  Stop.

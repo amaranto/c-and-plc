@@ -191,7 +191,7 @@ uint8_t Joystick_GetStatus(void);
  * @return	Returns BUTTONS_BUTTON1 if button1 is pressed
  */
 uint32_t Buttons_GetStatus (void);
-
+void Buttons_Set( bool stat );
 /**
  * @}
  */

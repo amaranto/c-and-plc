@@ -153,6 +153,12 @@ void Board_Buttons_Init(void)
 {
 	Chip_SCU_PinMux(1,0,MD_PUP|MD_EZI|MD_ZI,FUNC0); /* GPIO0[4], SW1 */
 	Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, BUTTONS_BUTTON1_GPIO_PORT_NUM, BUTTONS_BUTTON1_GPIO_BIT_NUM);	// input
+
+}
+
+void Buttons_Set( bool stat )
+{
+	Chip_GPIO_SetPinState (LPC_GPIO_PORT, BUTTONS_BUTTON1_GPIO_PORT_NUM, BUTTONS_BUTTON1_GPIO_BIT_NUM, stat );
 }
 
 uint32_t Buttons_GetStatus(void)
