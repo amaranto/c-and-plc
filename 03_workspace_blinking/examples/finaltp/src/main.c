@@ -96,10 +96,38 @@ static void Board_Buttons_InitAll(void)
 
 }
 
-uint32_t Buttons_GetStat(void)
+uint32_t Buttons_GetStat( int32_t button )
 {
+	uint8_t tmp_gpio_port = 0;
+	uint8_t tmp_gpio_bit = 0;
 	uint8_t ret = NO_BUTTON_PRESSED;
-	if (Chip_GPIO_GetPinState(LPC_GPIO_PORT, BUTTONS_BUTTON1_GPIO_PORT_NUM, BUTTONS_BUTTON1_GPIO_BIT_NUM) == 0) {
+	char str [30];
+
+	switch ( button ) {
+
+		case 1:
+			tmp_gpio_port = BUTTONS_BUTTON1_GPIO_PORT_NUM;
+			tmp_gpio_bit  = BUTTONS_BUTTON1_GPIO_BIT_NUM;
+			break;
+
+		case 2:
+			tmp_gpio_port = BUTTONS_BUTTON2_GPIO_PORT_NUM;
+			tmp_gpio_bit  = BUTTONS_BUTTON2_GPIO_BIT_NUM;
+			break;
+
+		case 3:
+			tmp_gpio_port = BUTTONS_BUTTON3_GPIO_PORT_NUM;
+			tmp_gpio_bit  = BUTTONS_BUTTON3_GPIO_BIT_NUM;
+			break;
+
+		case 4:
+			tmp_gpio_port = BUTTONS_BUTTON4_GPIO_PORT_NUM;
+			tmp_gpio_bit  = BUTTONS_BUTTON4_GPIO_BIT_NUM;
+			break;
+	}
+
+
+	if (Chip_GPIO_GetPinState(LPC_GPIO_PORT, tmp_gpio_port, tmp_gpio_bit) == 0) {
 		ret |= BUTTONS_BUTTON1;
 	}
 	return ret;
@@ -129,29 +157,28 @@ int main(void)
 	initHardware();
 
 
-	sprintf(str,"press button to continue");
+	sprintf(str,"press button 1 to continue");
 	DEBUGSTR(str);
 
-	btn = Buttons_GetStat();
-	sprintf(str,"tmp = %"PRIu32"\r\n", btn);
-	DEBUGSTR(str);
-
-	while ( Buttons_GetStat() == NO_BUTTON_PRESSED );
+	while ( Buttons_GetStat(1) == NO_BUTTON_PRESSED );
 	sprintf(str,"button pressed");
 	DEBUGSTR(str);
 
 	// Chip_GPIO_ClearValue(LPC_GPIO_PORT, 0,(1<<4));
-	//Chip_GPIO_SetValue (LPC_GPIO_PORT, BUTTONS_BUTTON2_GPIO_PORT_NUM, 1);
+	// Chip_GPIO_SetValue (LPC_GPIO_PORT, BUTTONS_BUTTON2_GPIO_PORT_NUM, 1);
+	sprintf(str, "press button 2 to continue");
+	DEBUGSTR(str);
+	while ( Buttons_GetStat(2) == NO_BUTTON_PRESSED );
 
-	do {
-		sprintf(str,"tmp = %"PRIu32"\r\n", btn);
-		DEBUGSTR(str);
-		btn = Buttons_GetStat();
-	}
-	while ( btn != NO_BUTTON_PRESSED );
+	sprintf(str, "press button 3 to continue");
+	DEBUGSTR(str);
+	while ( Buttons_GetStat(3) == NO_BUTTON_PRESSED );
 
+	sprintf(str, "press button 4 to continue");
+	DEBUGSTR(str);
+	while ( Buttons_GetStat(4) == NO_BUTTON_PRESSED );
 
-	btn = Buttons_GetStat();
+	btn = Buttons_GetStat(4);
 	sprintf(str,"tmp = %"PRIu32"\r\n", btn);
 	DEBUGSTR(str);
 
