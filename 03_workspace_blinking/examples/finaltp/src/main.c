@@ -76,6 +76,12 @@ static void initHardware(void)
 	Board_Buttons_InitAll();
 	SystemCoreClockUpdate();
 	SysTick_Config(SystemCoreClock / 1000);
+
+    Chip_SCTPWM_Init(LPC_SCT);
+    Chip_SCTPWM_SetRate(LPC_SCT, 10000);
+    Chip_SCU_PinMux(2,10,0,FUNC1);
+    Chip_SCTPWM_SetOutPin(LPC_SCT, 1, 2);
+    Chip_SCTPWM_Start(LPC_SCT);
 }
 
 static void Board_Buttons_InitAll(void)
@@ -151,44 +157,60 @@ void SysTick_Handler(void)
 int main(void)
 {
 	char str[30];
-	int32_t cont = 0;
+	int32_t duty = 0;
 	int32_t btn=0;
+	int32_t led_set=1;
 
 	initHardware();
 
 
-	sprintf(str,"press button 1 to continue");
+	sprintf(str,"press button 1 to continue\r\n");
 	DEBUGSTR(str);
-
 	while ( Buttons_GetStat(1) == NO_BUTTON_PRESSED );
-	sprintf(str,"button pressed");
-	DEBUGSTR(str);
 
 	// Chip_GPIO_ClearValue(LPC_GPIO_PORT, 0,(1<<4));
 	// Chip_GPIO_SetValue (LPC_GPIO_PORT, BUTTONS_BUTTON2_GPIO_PORT_NUM, 1);
-	sprintf(str, "press button 2 to continue");
+	sprintf(str, "press button 2 to continue\r\n");
 	DEBUGSTR(str);
 	while ( Buttons_GetStat(2) == NO_BUTTON_PRESSED );
 
-	sprintf(str, "press button 3 to continue");
+	sprintf(str, "press button 3 to continue\r\n");
 	DEBUGSTR(str);
 	while ( Buttons_GetStat(3) == NO_BUTTON_PRESSED );
 
-	sprintf(str, "press button 4 to continue");
+	sprintf(str, "press button 4 to continue\r\n");
 	DEBUGSTR(str);
 	while ( Buttons_GetStat(4) == NO_BUTTON_PRESSED );
 
-	btn = Buttons_GetStat(4);
-	sprintf(str,"tmp = %"PRIu32"\r\n", btn);
-	DEBUGSTR(str);
 
 	while (1)
 	{
-		sprintf(str,"blinking %"PRIu32"\r\n",cont);
-		cont++;
-		DEBUGSTR(str);
+		Board_LED_Toggle(LED0);
 
-		Board_LED_Toggle(LED);
+		if ( Buttons_GetStat(1) != NO_BUTTON_PRESSED ){
+			if ( ++duty    >100 ) duty = 100;
+			sprintf(str, "Incrementing duty value to %d\r\n" , duty);
+			DEBUGSTR(str);
+		}
+		else if ( Buttons_GetStat(2) != NO_BUTTON_PRESSED ){
+			if ( --duty    <0 ) duty = 0;
+			sprintf(str, "Decrementing duty value to %d\r\n" , duty);
+			DEBUGSTR(str);
+		}
+
+		else if ( Buttons_GetStat(3) != NO_BUTTON_PRESSED ){
+			if ( ++led_set > 5 ) led_set = 1;
+			sprintf(str, "Working on led %d\r\n" , led_set);
+			DEBUGSTR(str);
+		}
+
+		else if ( Buttons_GetStat(4) != NO_BUTTON_PRESSED ){
+			if ( --led_set < 1 ) led_set = 5;
+			sprintf(str, "Working on led %d\r\n" , led_set);
+			DEBUGSTR(str);
+		}
+
+		Chip_SCTPWM_SetDutyCycle(LPC_SCT, led_set, Chip_SCTPWM_PercentageToTicks(LPC_SCT, duty));
 		pausems(DELAY_MS);
 	}
 }
