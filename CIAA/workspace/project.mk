@@ -30,7 +30,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 # current project
-PROJECT = examples/finaltp
+PROJECT = examples/homework
 
 # current target
 TARGET = lpc4337_m4
