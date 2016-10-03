@@ -41,7 +41,5 @@ uint32_t Buttons_GetStat( int32_t button )
 		ret |= 0X01;
 	}
 
-	//sprintf(str, "[ Button ] Number %d return value %d ", (int)button, (int)ret );
-	//DEBUGSTR(str);
 	return ret;
 }
