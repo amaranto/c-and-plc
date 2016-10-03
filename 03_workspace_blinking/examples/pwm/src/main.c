@@ -80,7 +80,13 @@ static void initHardware(void)
 
     Chip_SCTPWM_SetRate(LPC_SCT, 10000);
 
-    Chip_SCU_PinMux(2,10,0,FUNC1);
+    Chip_SCU_PinMux(2,0,0,FUNC1);
+    Chip_SCU_PinMux(2,1,0,FUNC1);
+    Chip_SCU_PinMux(2,2,0,FUNC1);
+
+    Chip_SCU_PinMux(2,10,0,FUNC2);
+    Chip_SCU_PinMux(2,11,0,FUNC2);
+    Chip_SCU_PinMux(2,12,0,FUNC2);
 
     Chip_SCTPWM_SetOutPin(LPC_SCT, 1, 2);
 
