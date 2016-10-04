@@ -23,9 +23,8 @@ static void initHardware(void)
 
     Board_LEDS_InitCTOUT();
 
-    Chip_SCTPWM_SetOutPin(LPC_SCT, 1, LED1_CTOUT);
-    Chip_SCTPWM_SetOutPin(LPC_SCT, 2, LED2_CTOUT);
-    Chip_SCTPWM_SetOutPin(LPC_SCT, 3, LED3_CTOUT);
+    Chip_SCTPWM_SetOutPin(LPC_SCT, 1, LED2_CTOUT);
+    Chip_SCTPWM_SetOutPin(LPC_SCT, 2, LED3_CTOUT);
 
     Chip_SCTPWM_Start(LPC_SCT);
 }
@@ -47,6 +46,7 @@ int main(void)
 {
 	char str[30];
 	int32_t duty = 0;
+	int32_t input_value = 0;
 	int32_t led_set=1;
 
 	initHardware();
@@ -61,29 +61,38 @@ int main(void)
 		Board_LED_Toggle(LEDG);
 
 		if ( Buttons_GetStat(BUTTON_1) != NO_BUTTON_PRESSED ){
-			if ( ++duty    >100 ) duty = 100;
-			sprintf(str, "Incrementing duty value to %d\r\n" , (int)duty);
+			duty = 0x00;
+			input_value = 0x00;
+			sprintf(str, "Set value to %d\r\n" , (int)duty);
 			DEBUGSTR(str);
 		}
 		else if ( Buttons_GetStat(BUTTON_2) != NO_BUTTON_PRESSED ){
-			if ( --duty    <0 ) duty = 0;
-			sprintf(str, "Decrementing duty value to %d\r\n" , (int)duty);
+			duty = 0xff;
+			input_value = 0xff;
+			sprintf(str, "Set value to %d\r\n" , (int)duty);
 			DEBUGSTR(str);
 		}
 
 		else if ( Buttons_GetStat(BUTTON_3) != NO_BUTTON_PRESSED ){
-			if ( ++led_set > 3 ) led_set = 1;
-			sprintf(str, "Working on index %d\r\n" , (int)led_set);
+			duty += 0x10;
+			input_value = 0x10;
+
+			if ( duty > 0xff ) duty = 0xff;
+			sprintf(str, "Duty level [ %d ]\r\n" , (int)duty);
 			DEBUGSTR(str);
 		}
 
 		else if ( Buttons_GetStat(BUTTON_4) != NO_BUTTON_PRESSED ){
-			if ( --led_set < 1 ) led_set = 3;
-			sprintf(str, "Working on index %d\r\n" , (int)led_set);
+			duty -= 0x10;
+			input_value = 0x10;
+
+			if ( duty <= 0 ) duty = 0x00;
+			sprintf(str, "Duty level [ %d ]\r\n" , (int)duty);
 			DEBUGSTR(str);
 		}
 
-		Chip_SCTPWM_SetDutyCycle(LPC_SCT, led_set, Chip_SCTPWM_PercentageToTicks(LPC_SCT, duty));
+		Chip_SCTPWM_SetDutyCycle(LPC_SCT, 1, Chip_SCTPWM_PercentageToTicks(LPC_SCT, input_value));
+		Chip_SCTPWM_SetDutyCycle(LPC_SCT, 2, Chip_SCTPWM_PercentageToTicks(LPC_SCT, duty));
 		pausems(DELAY_MS);
 	}
 }
