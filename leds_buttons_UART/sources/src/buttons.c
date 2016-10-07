@@ -3,6 +3,7 @@
 #include "inttypes.h"
 #include "../inc/buttons.h"
 
+
 typedef	struct {
 	uint8_t port;
 	uint8_t pin;
@@ -12,7 +13,8 @@ typedef	struct {
 static const io_t gpioButtons[] = { {0,4,0},{0,8,0},{0,9,0},{1,9,0} };
 static const io_t scuButtons[]  = { {1,0,0},{1,1,0},{1,2,0},{1,6,0} };
 
-void Board_Buttons_InitAll(void)
+
+void Buttons_InitAll(void)
 {
 	int i=0;
 	for ( i=0; i < TOTAL_BUTTONS; i++) {
@@ -40,6 +42,8 @@ uint32_t Buttons_GetStat( int32_t button )
 	if (Chip_GPIO_GetPinState(LPC_GPIO_PORT, gpio_port, gpio_bit) == 0) {
 		ret |= 0X01;
 	}
+
+	Chip_GPIO_SetPinState (LPC_GPIO_PORT, gpio_port, gpio_bit, 1 );
 
 	return ret;
 }

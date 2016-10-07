@@ -30,7 +30,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 # current project
-PROJECT = examples/homework
+PROJECT = examples/uart_dma
 
 # current target
 TARGET = lpc4337_m4

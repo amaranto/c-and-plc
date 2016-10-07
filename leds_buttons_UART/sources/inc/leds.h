@@ -9,6 +9,4 @@
 #define LED2_CTOUT 5
 #define LED3_CTOUT 4
 
-
-void initLEDS ( void );
-void Board_LEDS_InitCTOUT( void );
+void LEDS_InitCTOUT( void );

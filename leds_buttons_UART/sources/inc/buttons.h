@@ -14,7 +14,8 @@
 	#define TOTAL_BUTTONS 4
 	#define NO_BUTTON_PRESSED   0x00
 
-	void Board_Buttons_InitAll(void);
+
+	void Buttons_InitAll(void);
 	uint32_t Buttons_GetStat( int32_t button );
 
 #endif

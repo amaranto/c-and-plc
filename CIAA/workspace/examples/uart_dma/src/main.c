@@ -145,7 +145,7 @@ static void App_DMA_Test(void)
 					  _GPDMA_CONN_UART_Tx,
 					  GPDMA_TRANSFERTYPE_M2P_CONTROLLER_DMA,
 					  sizeof(uartDMA_menu));
-	while (!channelTC) {}
+	while (!channelTC);
 
 	dmaChannelNumRx = Chip_GPDMA_GetFreeChannel(LPC_GPDMA, _GPDMA_CONN_UART_Rx);
 	isDMATx = DISABLE;
@@ -155,7 +155,7 @@ static void App_DMA_Test(void)
 					  (uint32_t) &receiveBuffer[0],
 					  GPDMA_TRANSFERTYPE_P2M_CONTROLLER_DMA,
 					  10);
-	while (!channelTC) {}
+	while (!channelTC);
 
 	isDMATx = ENABLE;
 	channelTC = channelTCErr = 0;
@@ -164,7 +164,7 @@ static void App_DMA_Test(void)
 					  _GPDMA_CONN_UART_Tx,
 					  GPDMA_TRANSFERTYPE_M2P_CONTROLLER_DMA,
 					  10);
-	while (!channelTC) {}
+	while (!channelTC);
 
 	App_DMA_DeInit();
 }
@@ -230,7 +230,7 @@ static void App_Interrupt_Test(void)
 		}
 		if (userInput == '1') {
 			Chip_UART_SendRB(LPC_UART, &txring, (uint8_t *) &uart_interrupt_menu1[0], sizeof(uart_interrupt_menu1));
-		}
+		}pic
 		else if (userInput == '2') {
 			Chip_UART_SendRB(LPC_UART, &txring, (uint8_t *) &uart_interrupt_menu2[0], sizeof(uart_interrupt_menu2));
 		}
