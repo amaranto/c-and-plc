@@ -3,7 +3,7 @@
 #include "../inc/leds.h"
 #include "../inc/uart.h"
 #include "../inc/dma.h"
-
+#include "../inc/functions.h"
 #include "board.h"
 #include "stdint.h"
 #include "inttypes.h"
@@ -29,6 +29,7 @@ static void initHardware(void)
 
     Chip_SCTPWM_SetOutPin(LPC_SCT, 1, LED2_CTOUT);
     Chip_SCTPWM_SetOutPin(LPC_SCT, 2, LED3_CTOUT);
+    Chip_SCTPWM_SetOutPin(LPC_SCT, 3, LED1_CTOUT);
 
     Chip_SCTPWM_Start(LPC_SCT);
 
@@ -56,19 +57,23 @@ void SysTick_Handler(void)
 int main(void)
 {
 	char str[MAX_OUTPUT];
-	int32_t duty = 0;
-	int32_t input_value = 0;
+	int32_t duty = 0,
+			result = 0,
+			input_value = 0;
 	uint8_t buffer[MAX_BUFFER];
 
 	initHardware();
 
 	sprintf(str,"press button 1 to continue\r\n");
 	DEBUGSTR(str);
-	while ( Buttons_GetStat(BUTTON_1) == NO_BUTTON_PRESSED );
+	while ( Buttons_GetStat_Antishock(BUTTON_1) == NO_BUTTON_PRESSED );
+
+	sprintf(str,"Type : to start \r\n");
+	DEBUGSTR(str);
 
 	while (FOREVER)
 	{
-		Board_LED_Toggle(LEDB);
+		LED_Toggle(LEDB);
 
 		/*------------- Reading keyboard ----------*/
 		memset ( str, 0, sizeof(str) );
@@ -80,12 +85,25 @@ int main(void)
 				sprintf ( buffer,"\r\n" );
 				break;
 
-			case 58:
+			case 58: // :
+				memset ( buffer, 0 , sizeof( buffer) ); // clean buffer
+				LED_Set (LEDB, 0); // stop led blue and set on led 1 while user inputs data via keyboard
+				Chip_SCTPWM_SetDutyCycle(LPC_SCT, 3, Chip_SCTPWM_PercentageToTicks(LPC_SCT, 0xff));
+
+				sprintf(str, "\r\nInsert vale in hex format > ");
+				UART_SendBlocking( LPC_UART, str, sizeof(str) );
+
+				UART_ReadBlocking ( LPC_UART, buffer, MAX_BUFFER ); // read the keyboard input
+				result = check_input ( buffer );
+
+				if ( result != 256 ) {
+					duty = result;
+					input_value = result;
+				}
+				else  DEBUGSTR( " [ Error ] Bad format or out of range " );
+
+				Chip_SCTPWM_SetDutyCycle(LPC_SCT, 3, Chip_SCTPWM_PercentageToTicks(LPC_SCT, 0x00)); // turn off the led 1
 				memset ( buffer, 0 , sizeof( buffer) );
-				Board_LED_Set ( LEDG, 1 );
-				Board_LED_Set ( LEDB, 0 );
-				UART_ReadBlocking ( LPC_UART, buffer, MAX_BUFFER );
-				Board_LED_Set ( LEDG, 0 );
 				break;
 
 			case 127: // Backspace
@@ -97,20 +115,20 @@ int main(void)
 
 		/*------------- Checking Buttons ---------*/
 
-		if ( Buttons_GetStat(BUTTON_1) != NO_BUTTON_PRESSED ){
+		if ( Buttons_GetStat_Antishock(BUTTON_1) != NO_BUTTON_PRESSED ){
 			duty = 0x00;
 			input_value = 0x00;
 			sprintf(str, " Duty level [ %d ]\n\r" , (int)duty);
 			UART_SendBlocking( LPC_UART, str, sizeof(str));
 		}
-		else if ( Buttons_GetStat(BUTTON_2) != NO_BUTTON_PRESSED ){
+		else if ( Buttons_GetStat_Antishock(BUTTON_2) != NO_BUTTON_PRESSED ){
 			duty = 0xff;
 			input_value = 0xff;
 			sprintf(str, " Duty level [ %d ]\n\r" , (int)duty);
 			UART_SendBlocking( LPC_UART, str, sizeof(str));
 		}
 
-		else if ( Buttons_GetStat(BUTTON_3) != NO_BUTTON_PRESSED ){
+		else if ( Buttons_GetStat_Antishock(BUTTON_3) != NO_BUTTON_PRESSED ){
 			duty += 0x10;
 			input_value = 0x10;
 
@@ -119,7 +137,7 @@ int main(void)
 			UART_SendBlocking( LPC_UART, str, sizeof(str));
 		}
 
-		else if ( Buttons_GetStat(BUTTON_4) != NO_BUTTON_PRESSED ){
+		else if ( Buttons_GetStat_Antishock(BUTTON_4) != NO_BUTTON_PRESSED ){
 			duty -= 0x10;
 			input_value = 0x10;
 

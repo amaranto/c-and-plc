@@ -25,8 +25,6 @@ void Buttons_InitAll(void)
 
 uint32_t Buttons_GetStat( int32_t button )
 {
-	uint8_t gpio_port = 0;
-	uint8_t gpio_bit = 0;
 	uint8_t ret = NO_BUTTON_PRESSED;
 	char str[30];
 
@@ -36,14 +34,21 @@ uint32_t Buttons_GetStat( int32_t button )
 		return ret;
 	}
 
-	gpio_port = gpioButtons[ button ].port;
-	gpio_bit = gpioButtons[ button ].pin;
-
-	if (Chip_GPIO_GetPinState(LPC_GPIO_PORT, gpio_port, gpio_bit) == 0) {
+	if (Chip_GPIO_GetPinState(LPC_GPIO_PORT, gpioButtons[ button ].port, gpioButtons[ button ].pin ) == 0) {
 		ret |= 0X01;
 	}
 
-	Chip_GPIO_SetPinState (LPC_GPIO_PORT, gpio_port, gpio_bit, 1 );
-
 	return ret;
+}
+
+uint32_t Buttons_GetStat_Antishock( int32_t button )
+{
+	uint8_t i = 0,
+			ret=NO_BUTTON_PRESSED;
+	while ( Buttons_GetStat(button) != NO_BUTTON_PRESSED ) i++;
+
+	Chip_GPIO_SetPinState (LPC_GPIO_PORT, gpioButtons[ button ].port, gpioButtons[ button ].pin, 1 );
+
+	if ( i < ANTISHOCK ) return NO_BUTTON_PRESSED;
+	else return 0x10;
 }

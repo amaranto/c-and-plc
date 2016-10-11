@@ -38,9 +38,21 @@ int UART_Read(LPC_USART_T *pUART, void *data, int numBytes)
 	/* Send until the transmit FIFO is full or out of bytes */
 	while ((readBytes < numBytes) &&
 		   ((Chip_UART_ReadLineStatus(pUART) & UART_LSR_RDR) != 0)) {
+
 		*p8 = Chip_UART_ReadByte(pUART);
-		p8++;
-		readBytes++;
+
+		if ( ( *p8 == 127 ) ){
+				UART_SendBlocking( LPC_UART, "\b \b", sizeof("\b \b") );
+				*p8 = '\0';
+				p8--;
+				readBytes--;
+				numBytes++;
+		}
+		else {
+			UART_SendBlocking( LPC_UART, p8, sizeof(p8) );
+			p8++;
+			readBytes++;
+		}
 	}
 
 	return readBytes;
@@ -53,12 +65,12 @@ int UART_ReadBlocking(LPC_USART_T *pUART, void *data, int numBytes)
 	uint8_t *p8 = (uint8_t *) data;
 
 	while (readBytes < numBytes) {
-		pass = Chip_UART_Read(pUART, p8, numBytes);
+
+		pass = UART_Read(pUART, p8, numBytes);
 		numBytes -= pass;
 		readBytes += pass;
 		p8 += pass;
 	}
-
 	return readBytes;
 }
 

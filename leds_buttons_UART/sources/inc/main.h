@@ -1,4 +1,4 @@
-#ifndef _MAIN_H_
+	#ifndef _MAIN_H_
 	#define _MAIN_H_
 
 	#ifdef __cplusplus
@@ -6,9 +6,9 @@
 	#endif
 
 	#define DELAY_MS 500
-	#define MAX_BUFFER 10
+	#define MAX_BUFFER 4
 	#define FOREVER 1
-	#define MAX_OUTPUT 25
+	#define MAX_OUTPUT 50
 
 	int main(void);
 

@@ -13,9 +13,10 @@
 
 	#define TOTAL_BUTTONS 4
 	#define NO_BUTTON_PRESSED   0x00
-
+	#define ANTISHOCK 5
 
 	void Buttons_InitAll(void);
 	uint32_t Buttons_GetStat( int32_t button );
+	uint32_t Buttons_GetStat_Antishock( int32_t button );
 
 #endif
