@@ -7,7 +7,7 @@ make clean
 make download
 
 If the download was successfully then you should see "Download done." at the end of the output.
-In order to interact with the borad via keyboard, you have to run :
+In order to interact with the board via keyboard, you have to run :
 
 picocom -b 115200 /dev/ttyUSB1
 
