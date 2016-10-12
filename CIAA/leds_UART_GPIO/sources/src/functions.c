@@ -6,6 +6,10 @@
 #include "../inc/uart.h"
 
 
+uint32_t interpolate ( uint32_t value ){
+
+}
+
 uint32_t check_input ( uint8_t* buffer ){
 
 
@@ -15,8 +19,6 @@ uint32_t check_input ( uint8_t* buffer ){
 			 len = sizeof (buffer) / sizeof ( uint8_t );
 	uint8_t c;
 
-	result = (uint32_t) strtol(buffer, NULL, 16);
-
 	for ( i=1; i < len-1 ; i++ ) {
 
 		c = *(buffer + read );
@@ -24,11 +26,13 @@ uint32_t check_input ( uint8_t* buffer ){
 		if ( ( c >= 48 && c <= 58 ) ||  ( c >= 65 && c <= 70) || ( c >= 97 && c <= 102) ){
 			read += sizeof ( uint8_t );
 		}
-		else {
-			result = 256;
-			break;
-		}
+		else
+			return 256;
+
 	}
 
-	return result;
+	return (uint32_t) strtol(buffer, NULL, 16);
 }
+
+
+
