@@ -85,7 +85,7 @@ int main(void)
 		switch ( buffer[0] ) {
 
 			case 13: // Enter
-				sprintf ( str,"| LED2 [ %d ] | LED3 [ %d ] |\r\n", input_value, duty );
+				sprintf ( str,"| LED2 [ 0x%X ] | LED3 [ 0x%X ] |\r\n", input_value, duty );
 				UART_SendBlocking( LPC_UART, str, sizeof(str) );
 				memset ( str, 0, sizeof(str) );
 				break;
@@ -95,7 +95,7 @@ int main(void)
 				LED_Set (LEDB, 0); // stop led blue and set on led 1 while user inputs data via keyboard
 				Chip_SCTPWM_SetDutyCycle(LPC_SCT, 3, Chip_SCTPWM_PercentageToTicks(LPC_SCT, 0xff));
 
-				sprintf(str, "\r\n>");
+				sprintf(str, "\r\n>0x");
 				UART_SendBlocking( LPC_UART, str, sizeof(str) );
 
 				UART_ReadBlocking ( LPC_UART, buffer, MAX_BUFFER ); // read the keyboard input
