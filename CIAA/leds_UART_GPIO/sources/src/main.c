@@ -73,10 +73,6 @@ int main(void)
 
 	while ( Buttons_GetStat_Antishock(BUTTON_1) == NO_BUTTON_PRESSED );
 
-	sprintf(str,"Insert : to start \r\n");
-	UART_SendBlocking( LPC_UART, str, sizeof(str) );
-	memset ( str, 0, sizeof(str) );
-
 	while (FOREVER)
 	{
 		LED_Toggle(LEDB);
@@ -89,14 +85,10 @@ int main(void)
 		switch ( buffer[0] ) {
 
 			case 13: // Enter
-				sprintf ( str,"LED2 [ %d ] | LED3 [ %d ]\r\n", input_value, duty );
+				sprintf ( str,"| LED2 [ %d ] | LED3 [ %d ] |\r\n", input_value, duty );
 				UART_SendBlocking( LPC_UART, str, sizeof(str) );
 				memset ( str, 0, sizeof(str) );
 				break;
-
-		 /*	case 127: // Backspace
-				sprintf ( buffer,"\b \b" );
-				break; */
 
 			case 58: // :
 				memset ( buffer, 0 , sizeof( buffer) ); // clean buffer
@@ -110,10 +102,11 @@ int main(void)
 				result = check_input ( buffer );
 
 				if ( result != 256 ) {
-					duty = result;
 					input_value = result;
-					sprintf( str, "\r\n" );
+					duty = interpolate ( result );
+					sprintf( str, "Input [ 0x%X ] | Result [ 0x%X ] \r\n", input_value, duty );
 					UART_SendBlocking( LPC_UART, str, sizeof(str) );
+					memset ( str, 0, sizeof(str) );
 				}
 				else {
 					sprintf( str, "\n\rError ! Value %s out of range.\r\n", buffer );
@@ -126,6 +119,8 @@ int main(void)
 				break;
 
 			default:
+				UART_SendBlocking( LPC_UART, str, sizeof(str) );
+				memset ( str, 0, sizeof(str) );
 				memset ( buffer, 0 , sizeof( buffer) ); //ignore another input
 				break;
 		}
@@ -142,15 +137,18 @@ int main(void)
 		}
 
 		else if ( Buttons_GetStat_Antishock(BUTTON_3) != NO_BUTTON_PRESSED ){
-			duty += 0x10;
-			input_value = 0x10;
-			if ( duty > 0xff ) duty = 0xff;
+
+			input_value += 0x10;
+			if ( input_value > 0xff ) input_value = 0xff;
+
+			duty = interpolate ( input_value );
 		}
 
 		else if ( Buttons_GetStat_Antishock(BUTTON_4) != NO_BUTTON_PRESSED ){
-			duty -= 0x10;
-			input_value = 0x10;
-			if ( duty <= 0 ) duty = 0x00;
+
+			input_value -= 0x10;
+			if ( input_value < 0x00 ) input_value = 0x00;
+			duty = interpolate ( input_value );
 		}
 		//App_DMA_Test();
 		Chip_SCTPWM_SetDutyCycle(LPC_SCT, 1, Chip_SCTPWM_PercentageToTicks(LPC_SCT, input_value));
