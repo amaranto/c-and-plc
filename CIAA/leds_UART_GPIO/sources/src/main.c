@@ -85,7 +85,7 @@ int main(void)
 		switch ( buffer[0] ) {
 
 			case 13: // Enter
-				sprintf ( str,"| LED2 [ 0x%X ] | LED3 [ 0x%X ] |\r\n", input_value, duty );
+				sprintf ( str,"LED2  [ 0x%X ] | LED3   [ 0x%X ] \r\n", input_value, duty );
 				UART_SendBlocking( LPC_UART, str, sizeof(str) );
 				memset ( str, 0, sizeof(str) );
 				break;
