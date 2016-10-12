@@ -8,8 +8,6 @@
 #include<sys/socket.h>
 #include<arpa/inet.h>
 
-// I am not the owner of this source, just I want to share it because it is cool and easy to read. 
-
 void ProcessPacket(unsigned char* , int);
 void print_ip_header(unsigned char* , int);
 void print_tcp_packet(unsigned char* , int);
