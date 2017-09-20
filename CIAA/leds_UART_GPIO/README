@@ -1,5 +1,6 @@
 You have to install gcc, gdb, openlpc ,gcc-arm-none-eabi and picocom before start.
 You can do it via official repos.
+Official  edu-ciaa web page http://www.proyecto-ciaa.com.ar/devwiki/doku.php?id=desarrollo:firmware:instalacion_sw .
 Now, you have to connect your EDU-CIA ( cortex m4 ) through USB-Debug port.
 From a terminal run :
 
