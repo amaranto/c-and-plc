@@ -1,4 +1,4 @@
-You have to install gcc, gdb, openlpc and picocom before start.
+You have to install gcc, gdb, openlpc ,gcc-arm-none-eabi and picocom before start.
 You can do it via official repos.
 Now, you have to connect your EDU-CIA ( cortex m4 ) through USB-Debug port.
 From a terminal run :
