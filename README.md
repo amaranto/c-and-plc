@@ -22,9 +22,12 @@ make download
 `
 
 In order to interact with the board via keyboard, you have to run :
-```
+
+`
+
 picocom -b 115200 /dev/ttyUSB1
-```
+
+`
 
 The outcome should be like this :
 
