@@ -17,30 +17,24 @@ From a terminal run :
 
 `
 make clean
-
 make download
 `
 
 In order to interact with the board via keyboard, you have to run :
 
 `
-
 picocom -b 115200 /dev/ttyUSB1
-
 `
 
 The outcome should be like this :
 
 `
-
 picocom v1.7
 
 port is        : /dev/ttyUSB1
 
 flowcontrol    : none
-
 baudrate is    : 115200
-
 parity is      : none
 databits are   : 8
 escape is      : C-a
@@ -53,7 +47,6 @@ receive_cmd is : rz -vv
 imap is        : 
 omap is        : 
 emap is        : crcrlf,delbs,
-
 Terminal ready
 Press button 1 to continue ... 
 `
