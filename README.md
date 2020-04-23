@@ -15,13 +15,8 @@
 ## Usage
 From a terminal run :
 
-`
-
-make clean
-
-make download
-
-`
+`make clean`
+`make download`
 
 In order to interact with the board via keyboard, you have to run :
 
@@ -29,10 +24,8 @@ In order to interact with the board via keyboard, you have to run :
 
 - The outcome should be like this :
 
-`
-picocom v1.7
-
-port is        : /dev/ttyUSB1
+`picocom v1.7`
+`port is        : /dev/ttyUSB1`
 
 flowcontrol    : none
 
