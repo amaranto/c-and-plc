@@ -16,9 +16,11 @@
 From a terminal run :
 
 `
+
 make clean
 
 make download
+
 `
 
 In order to interact with the board via keyboard, you have to run :
@@ -63,8 +65,11 @@ emap is        : crcrlf,delbs,
 Terminal ready
 
 Press button 1 to continue ... 
+
 `
+
 - Increasing and decreasing the shine on the leds using keyboard and buttons.
+
 `
 Press ENTER to check the current value of the LEDS
 
