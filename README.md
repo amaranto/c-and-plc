@@ -17,6 +17,7 @@ From a terminal run :
 
 `
 make clean
+
 make download
 `
 
@@ -26,6 +27,7 @@ In order to interact with the board via keyboard, you have to run :
 
 - The outcome should be like this :
 
+`
 picocom v1.7
 
 port is        : /dev/ttyUSB1
@@ -61,9 +63,9 @@ emap is        : crcrlf,delbs,
 Terminal ready
 
 Press button 1 to continue ... 
-
+`
 - Increasing and decreasing the shine on the leds using keyboard and buttons.
-
+`
 Press ENTER to check the current value of the LEDS
 
 Press : to insert a hex value between 00 and ff
@@ -76,4 +78,4 @@ Press button 3 to increase the value in 0x10
 
 Press button 4 to deacrease the value in 0x10
 
-
+`
