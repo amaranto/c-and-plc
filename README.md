@@ -1,1 +1,2 @@
-# Playing with c and plc
+# Some C/C++ little projects
+
